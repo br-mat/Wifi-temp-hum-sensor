@@ -6,7 +6,7 @@ The goal of the project is to connect a DHT-11 Sensor to the local network. Stor
 - [Features](#features)
 - [Description](#description)
 - [Circuit](#circuit)
-- [grafana and raspberrypi](#grafana-and-raspberrypi
+- [grafana and raspberrypi](#grafana-and-raspberrypi)
 - [pictures](#pictures)
 
 ## Features
