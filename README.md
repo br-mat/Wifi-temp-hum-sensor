@@ -129,7 +129,7 @@ Now fill in name and password of the Database like in the example below. You hav
 
 <br>
 
-The next step is to configure a dashboard. Go to *'create'* and click on dasboard. Now you can add panels, in the panel you have to use the database we configured earlier. For basic panels the default pabel-configuration is quite handy and you do not need to know the query language. Fill in location and Value like in the example below and your panel is finished. All these steps are well explaned in the tutorial of grafana itself if there are any questions left. Altough it's simple so i just pointed out the most important steps briefly. <br>
+The next step is to configure a dashboard. Go to *'create'* and click on dasboard. Now you can add panels, in the panel you have to use the database we configured earlier. For basic panels the default pabel-configuration is quite handy and you do not need to know the query language. Fill in location and Value like in the example below and your panel is finished. All these steps are well explaned in the tutorial of grafana itself if there are any questions left. Altough it's simple so i just pointed out the most important steps briefly. However don't forget too apply and save your panel and dashboard. <br>
 
 ![dashboard configuration](/docs/pictures/dashboard.png "dashboard configuration example") <br>
 
