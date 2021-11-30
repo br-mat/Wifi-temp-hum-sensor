@@ -10,8 +10,8 @@ I use it to monitor indoor and outdoor environmental values like temperature and
 - [Description](#description)
 - [Circuit](#circuit)
 - [Code](#code)
-- [grafana and raspberrypi](#grafana-and-raspberrypi)
-- [pictures](#pictures)
+- [Grafana and RaspberryPi](#grafana-and-raspberrypi)
+- [Pictures](#pictures)
 
 ### Goals
 - Measure Data
