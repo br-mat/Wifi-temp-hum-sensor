@@ -1,5 +1,21 @@
-//MQTT CLIENT ID and TOPIC needs to be CHANGED for every INDIVIDUAL sensor
+/*
+Copyright (C) <2021>  <br-mat>
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Contact mail: matthiasbraun@gmx.at
+*/
+//MQTT CLIENT ID and TOPIC needs to be CHANGED for every INDIVIDUAL sensor
 #include "PubSubClient.h" // Connect and publish to the MQTT broker
 #include <Wire.h>
 
@@ -18,15 +34,15 @@ DHT dht(DHTPIN, DHTTYPE);
 unsigned long intervall = 60*1000* 299; //299s ~ evrey 5 min
 
 // WiFi
-const char* ssid = "A1-08e52c";         // Your personal network SSID
-const char* wifi_password = "mabritck"; // Your personal network password
+const char* ssid = "XXXXXX";         // Your personal network SSID
+const char* wifi_password = "XXXXXX"; // Your personal network password
 
 // MQTT
-const char* mqtt_server = "10.0.0.18";  // IP of the MQTT broker
+const char* mqtt_server = "10.0.0.XX";  // IP of the MQTT broker
 const char* humidity_topic = "home/sens1/humidity";
 const char* temperature_topic = "home/sens1/temperature";
-const char* mqtt_username = "mbraun"; // MQTT username
-const char* mqtt_password = "wdsaibuii123"; // MQTT password
+const char* mqtt_username = "XXXXX"; // MQTT username
+const char* mqtt_password = "XXXXX"; // MQTT password
 const char* clientID = "client_sens1"; // MQTT client ID
 
 // Initialise the WiFi and MQTT Client objects
