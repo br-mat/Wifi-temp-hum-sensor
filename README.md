@@ -42,12 +42,12 @@ This is just a simple Project to connect a DHT-11 Sensor to your local network, 
 In the current setup it measures temperature and humidity, optionally other sensors could be connected too. Connecting a BMx-280 sensor for example should be possible too to measure pressure as well. In this case the code must be adjusted of course, this will probably be added later. <br>
 The circuit is supplied by a conventional 12V power supply I had lying around this would be a too high Voltage source for our 3.3V Microcontroller I use a buck-converter. <br>
 <br>
-To build this project there is some asumed knowledge necessary, like basic Linux or programming Languages (Python, C++). For beginners i will link some helpful tutorials which illustrate the configuration steps in detail, whenever i found a good one.
+To build this project there is some assumed knowledge necessary, like basic Linux or programming Languages (Python, C++). For beginners i will link some helpful tutorials which illustrate the configuration steps in detail, whenever i found a good one.
 
 ## Circuit
 I wanted to keep the effort manageable and beginner friendly therefore the circuit itself might not be efficient. As possible upgrade a lot energy can be saved when with good solder [skills](https://www.instructables.com/Enable-DeepSleep-on-an-ESP8266-01/) this way the phone charger can probably be dropped and a *9V* Battery is probably sufficient. <br>
 <br>
-Fritzing is pretty useful for smaller projects. Youe can draw nice sketches of your circuits and export gerber files to print pcb somewhere. <br>
+Fritzing is pretty useful for smaller projects. You can draw nice sketches of your circuits and export gerber files to print pcb somewhere. <br>
 The Buck-converter needs to bee adjusted with a Multimeter to *3.3V* depending on your input Voltage. To supply the circuit an old *5V* micro-USB phone charger is fine, i use an old 5V adapter with a coaxial power connector so i simply switched the micro-USB connector to a fitting coaxial. <br>
 
 ![circuit](/docs/circuit.png "circuit")
@@ -55,23 +55,23 @@ The Buck-converter needs to bee adjusted with a Multimeter to *3.3V* depending o
 ![circuitraw](/docs/circuitraw.png "circuit")
 
 <br>
-The prototype version i did on breadboards, but they are impractical. So I soldered the pcb layout on simple hole grid plates (*3x7cm*) and inserted a fuse on the positive incomming wire because of security reasons. <br>
+The prototype version i did on breadboards, but they are impractical. So I soldered the PCB layout on simple hole grid plates (*3x7cm*) and inserted a fuse on the positive incoming wire because of security reasons. <br>
 
 ![circuitpcb](/docs/circuitpcb.png "circuit")
 
 ## Code
 [code](/code/esp01_DHT11grafanaV1) <br>
-I used Arduino IDE to programm the microcontroller. Therefor just copy the folder and open it within the IDE. You have to install the Board maynually if you have not already, as the ESP8266 is not contained by default. This is the case for the library of the DHT sensor as well, this time just use the library manager within the IDE.
+I used Arduino IDE to program the microcontroller. Therefor just copy the folder and open it within the IDE. You have to install the Board manually if you have not already, as the ESP8266 is not contained by default. This is the case for the library of the DHT sensor as well, this time just use the library manager within the IDE.
 
 
 
 ## Grafana and Raspberrypi
 ### General
-Personally, I am currently using a [**RaspberryPi 4B**](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) with *4GB* Ram on which also a [*VPN*](https://www.pivpn.io/) (**wireguard**) and [*Pihole*](https://pi-hole.net/) are installed. Thanks to the [*VPN*](https://www.pivpn.io/), I can also access the data on the go. I won't go into the installation any further, but it is relatively simple and well described in numerous tutorials. <br>Altough a VPN is not necessary for basic operation. Some basic things are important to know:
+Personally, I am currently using a [**RaspberryPi 4B**](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) with *4GB* Ram on which also a [*VPN*](https://www.pivpn.io/) (**wireguard**) and [*Pihole*](https://pi-hole.net/) are installed. Thanks to the [*VPN*](https://www.pivpn.io/), I can also access the data on the go. I won't go into the installation any further, but it is relatively simple and well described in numerous tutorials. <br>Although a VPN is not necessary for basic operation. Some basic things are important to know:
 - SSid (Netzwerkname): EXAMPLE-XYZ
 - Password: passwordXYZ
 - IP or hostname of the RaspberryPi (IP statically assigned)
-For easier configuration either use screen, ssh, teamviewer, vnc viewer ... to work with the Raspberrypi. Personally i use ssh and vnc, these are easy to install and intuitive to use. <br>
+For easier configuration either use screen, ssh, teamviewer, vnc viewer ... to work with the Raspberrypi. Personally I use ssh and vnc, these are easy to install and intuitive to use. <br>
 
 ### InfluxDB
 InfluxDB will be our database to store the gathered data in. 
@@ -90,7 +90,7 @@ GRANT ALL ON "username" TO "database"
 ```
 This ***username*** as well as ***password*** and the ***database*** must be filled in in the code of the microcontrollers.
 <br>
-To get out of this "interface" you simply have to enter the command **exit** and you are back in the terminal.
+To get out of this "interface" you simply must enter the command **exit** and you are back in the terminal.
 ```
 exit
 ```
@@ -130,7 +130,7 @@ Open cron with any editor to enter the desired programs. As an example:
 ```
 @reboot /path/file.sh
 ```
-This file will then be executed at every reboot. It is possible to execute files in specific intervalls, look up additional [information](https://pimylifeup.com/cron-jobs-and-crontab/) to cron.
+This file will then be executed at every reboot. It is possible to execute files in specific intervals, look up additional [information](https://pimylifeup.com/cron-jobs-and-crontab/) to cron.
 <br>
 
 ### Grafana
@@ -138,7 +138,7 @@ This file will then be executed at every reboot. It is possible to execute files
 
 Again, there are very good [tutorials](https://grafana.com/tutorials/install-grafana-on-raspberry-pi/) that you can fall back on, so I won't go into more detail about the installation process. Grafana can be used to display the collected data in nice plots. <br>
 
-In order to use grafana we need to configure our datasource and the dashboard. Starting with the datasource, first of all open a browser and enter (or whatever the IP of your pi's adress is): <br>
+In order to use Grafana we need to configure our datasource and the dashboard. Starting with the datasource, first of all open a browser and enter (or whatever the IP of your pi's adress is): <br>
 ```
 http://raspberrypi:3000/
 ```
@@ -153,7 +153,7 @@ Now fill in name and password of the Database like in the example below. You hav
 
 <br>
 
-The next step is to configure a dashboard. Go to *'create'* and click on dasboard. Now you can add panels, in the panel you have to use the database we configured earlier. For basic panels the default pabel-configuration is quite handy and you do not need to know the query language. Fill in location and Value like in the example below and your panel is finished. All these steps are well explaned in the tutorial of grafana itself if there are any questions left. Altough it's simple so i just pointed out the most important steps briefly. However don't forget too apply and save your panel and dashboard. <br>
+The next step is to configure a dashboard. Go to *'create'* and click on dashboard. Now you can add panels, in the panel you must use the database we configured earlier. For basic panels the default panel-configuration is quite useful and you do not need to know the query language. Fill in location and Value like in the example below and your panel is finished. All these steps are well explained in the tutorial of Grafana itself if there are any questions left. Although it's simple so I just pointed out the most important steps briefly. However, don't forget to apply and save your panel and dashboard. <br>
 
 ![dashboard configuration](/docs/pictures/dashboard.png "dashboard configuration example") <br>
 
