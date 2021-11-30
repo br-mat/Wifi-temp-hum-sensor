@@ -9,17 +9,26 @@ The goal of the project is to connect a DHT-11 Sensor to the local network. Stor
 - [grafana and raspberrypi](#grafana-and-raspberrypi)
 - [pictures](#pictures)
 
-### Features
-- RaspberryPi 4
-- InfluxDB
-- Grafana
-- DHT-11 (or BME-280 etc.)
-
 ### Goals
 - Measure Data
 - send with MQTT
 - store in Database (Influxdb)
 - display plots in grafana
+
+### Features
+- RaspberryPi
+- InfluxDB
+- Grafana
+- DHT-11 (or BME-280 etc.)
+
+### Parts
+- RaspberryPi 4
+- DHT-11
+- Buck-converter
+- micro USB connector (etc.)
+- phone charger or other supply
+- Resistors (2x *10k*, 2x *3.3k*)
+- Capacitor (1x *100nF*)
 
 ## Description
 This is just a simple Project to connect a DHT-11 Sensor to your local network, sends its data and plot these values with Grafana. The concept should work with almost any sensor, as sending data with MQTT is quite simple. In my case I’m using a ESP-8266-01 because it’s a pretty small package. <br>
