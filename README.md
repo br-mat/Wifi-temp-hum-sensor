@@ -1,11 +1,15 @@
 # Wifi-temp-hum-sensor
 ## About
-The goal of the project is to connect a DHT-11 Sensor to the local network. Store its data and plot the data in some nice graphs. All parts i used for the project itself i had laying round so its quite simple structured.
+The goal of the project is to connect a DHT-11 Sensor to the local network. Store its data and plot the data in some nice graphs. All parts i used for the project itself i had laying round so its quite simple structured. <br>
+<br>
+I use it to monitor indoor and outdoor environmental values like temperature and humidity (or pressure). With a VPN, I can even watch the values on the go.
+<br>
 
 ## Content
 - [Features & Goals](#features)
 - [Description](#description)
 - [Circuit](#circuit)
+- [Code](#code)
 - [grafana and raspberrypi](#grafana-and-raspberrypi)
 - [pictures](#pictures)
 
@@ -15,13 +19,8 @@ The goal of the project is to connect a DHT-11 Sensor to the local network. Stor
 - store in Database (Influxdb)
 - display plots in grafana
 
-### Features
-- RaspberryPi
-- InfluxDB
-- Grafana
-- DHT-11 (or BME-280 etc.)
-
-### Parts
+### Parts & Features
+Hardware:
 - RaspberryPi 4
 - DHT-11
 - Buck-converter
@@ -29,6 +28,14 @@ The goal of the project is to connect a DHT-11 Sensor to the local network. Stor
 - phone charger or other supply
 - Resistors (2x *10k*, 2x *3.3k*)
 - Capacitor (1x *100nF*)
+
+Software:
+- Raspian (etc.)
+- InfluxDB
+- Grafana
+- Python (should be installed by default, probably some packages needed)
+- Arduino IDE or Platformio
+
 
 ## Description
 This is just a simple Project to connect a DHT-11 Sensor to your local network, sends its data and plot these values with Grafana. The concept should work with almost any sensor, as sending data with MQTT is quite simple. In my case I’m using a ESP-8266-01 because it’s a pretty small package. <br>
@@ -38,6 +45,8 @@ The circuit is supplied by a conventional 12V power supply I had lying around th
 To build this project there is some asumed knowledge necessary, like basic Linux or programming Languages (Python, C++). For beginners i will link some helpful tutorials which illustrate the configuration steps in detail, whenever i found a good one.
 
 ## Circuit
+I wanted to keep the effort manageable and beginner friendly therefore the circuit itself might not be efficient. As possible upgrade a lot energy can be saved when with good solder [skills](https://www.instructables.com/Enable-DeepSleep-on-an-ESP8266-01/) this way the phone charger can probably be dropped and a *9V* Battery is probably sufficient. <br>
+<br>
 Fritzing is pretty useful for smaller projects. Youe can draw nice sketches of your circuits and export gerber files to print pcb somewhere. <br>
 The Buck-converter needs to bee adjusted with a Multimeter to *3.3V* depending on your input Voltage. To supply the circuit an old *5V* micro-USB phone charger is fine, i use an old 5V adapter with a coaxial power connector so i simply switched the micro-USB connector to a fitting coaxial. <br>
 
@@ -49,6 +58,12 @@ The Buck-converter needs to bee adjusted with a Multimeter to *3.3V* depending o
 The prototype version i did on breadboards, but they are impractical. So I soldered the pcb layout on simple hole grid plates (*3x7cm*) and inserted a fuse on the positive incomming wire because of security reasons. <br>
 
 ![circuitpcb](/docs/circuitpcb.png "circuit")
+
+## Code
+[code](/code/esp01_DHT11grafanaV1) <br>
+I used Arduino IDE to programm the microcontroller. Therefor just copy the folder and open it within the IDE. You have to install the Board maynually if you have not already, as the ESP8266 is not contained by default. This is the case for the library of the DHT sensor as well, this time just use the library manager within the IDE.
+
+
 
 ## Grafana and Raspberrypi
 ### General
