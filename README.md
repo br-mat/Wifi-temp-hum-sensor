@@ -71,20 +71,11 @@ To get out of this "interface" you simply have to enter the command **exit** and
 exit
 ```
 
-### Grafana
-![grafana dashboard example](/docs/pictures/placeholder.png "placeholder") <br>
-
-Again, there are very good [tutorials](https://grafana.com/tutorials/install-grafana-on-raspberry-pi/) that you can fall back on, so I won't go into more detail about the installation process. Grafana can be used to display the collected data in beautiful plots. <br>
-
-Once Grafana is installed, the [json](/grafana_dashboard/bewaeMonitor.json) export can be imported via the web interface. <br>
-
-Under 'Configuration' you now have to enter the 'Datasources'. Here you have to make sure to use the same databases that you create and in which the data is stored. In my case, that would be e.B ***main***. <br>
-
-![Datasource configuration](/docs/pictures/datasources.png "Datasource configuration example") <br>
-
-### MQTT&Python
-
-#### MQTT
+### MQTT & Python script
+#### Installation
+Again, there is a [link](https://pimylifeup.com/raspberry-pi-mosquitto-mqtt-server/).
+Username and password must be adjusted in all places in the code. <br>
+<br>
 **MQTT** (Message Queuing Telemetry Transport) Is an open network protocol for machine-to-machine communication (M2M) that enables the transmission of telemetry data in the form of messages between devices. How it works [(link)](http://www.steves-internet-guide.com/mqtt-works/). <br>
 The messages sent consist of topic and payload. Topics are used for simple assignment and have a fixed structure in my case:
 ```
@@ -103,11 +94,9 @@ In addition to this topic, the data is appended in the payload, the content as a
 
 ```
 
-#### Installation
-Again, there is a [link](https://pimylifeup.com/raspberry-pi-mosquitto-mqtt-server/).
-Username and password must be adjusted in all places in the code.
+<br>
 
-#### Python
+#### Python script
 In order to be able to write or read the data sent via [*MQTT*](#mqtt) to the database, the Python script [MQTTInfluxDBBridge3.py](/code/pi_scripts/MQTTInfluxDBBridge3.py) is used. The script itself comes from a [Tutorial](https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/) and has been adapted to adapt it to the requirements in my projects. The Python code can be started with the shell script [launcher1.sh](/code/pi_scripts/launcher1.sh) automatically with crontab at each boot process. Since the Pi needs a certain amount of time to start everything without errors, I delay the start of the script by *20* seconds. <br>
 To avoid errors, only **int** values should be sent via [*MQTT*](#mqtt) (*2* **byte**), the data type **int** is large on [*Arduino Nano*](https://store.arduino.cc/products/arduino-nano) *2* **byte**. <br>
 ```
@@ -118,7 +107,31 @@ Open cron with any editor to enter the desired programs. As an example:
 @reboot /path/file.sh
 ```
 This file will then be executed at every reboot. It is possible to execute files in specific intervalls, look up additional [information](https://pimylifeup.com/cron-jobs-and-crontab/) to cron.
+<br>
 
+### Grafana
+![grafana dashboard example](/docs/pictures/placeholder.png "placeholder") <br>
+
+Again, there are very good [tutorials](https://grafana.com/tutorials/install-grafana-on-raspberry-pi/) that you can fall back on, so I won't go into more detail about the installation process. Grafana can be used to display the collected data in nice plots. <br>
+
+In order to use grafana we need to configure our datasource and the dashboard. Starting with the datasource, first of all open a browser and enter (or whatever the IP of your pi's adress is): <br>
+```
+http://raspberrypi:3000/
+```
+- click *'Configuration'* on the left side
+- Simply hit *'Add Datasoruce'*
+- Now select *InfluxDB* as our Database
+
+<br>
+Now fill in name and password of the Database like in the example below. You have to make sure to use the same databases that you created earlier and in which the data is stored. In my case, that would be *main* in the example case. <br>
+
+![Datasource configuration](/docs/pictures/datasources.png "Datasource configuration example") <br>
+
+<br>
+
+The next step is to configure a dashboard. Go to *'create'* and click on dasboard. Now you can add panels, in the panel you have to use the database we configured earlier. For basic panels the default pabel-configuration is quite handy and you do not need to know the query language. Fill in location and Value like in the example below and your panel is finished. All these steps are well explaned in the tutorial of grafana itself if there are any questions left. Altough it's simple so i just pointed out the most important steps briefly. <br>
+
+![dashboard configuration](/docs/pictures/dashboard.png "dashboard configuration example") <br>
 
 ## Pictures
 ![board](/docs/pictures/dht11wifi.jpg "board")
