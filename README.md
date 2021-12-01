@@ -1,6 +1,6 @@
 # Wifi-temp-hum-sensor
 ## About
-The goal of the project is to connect a DHT-11 Sensor to the local network. Store its data and plot the data in some nice graphs. All parts i used for the project itself i had laying round so its quite simple structured. <br>
+The goal of the project is to connect a DHT-11 Sensor to the local network. Store its data and plot the data in nice graphs. All parts i used for the project itself i had laying round so its quite simple structured. <br>
 <br>
 I use it to monitor indoor and outdoor environmental values like temperature and humidity (or pressure). With a VPN, I can even watch the values on the go.
 <br>
@@ -17,7 +17,7 @@ I use it to monitor indoor and outdoor environmental values like temperature and
 - Measure Data
 - send with MQTT
 - store in Database (Influxdb)
-- display plots in grafana
+- display time series data with grafana
 
 ### Parts & Features
 Hardware:
@@ -35,6 +35,7 @@ Software:
 - Grafana
 - Python (should be installed by default, probably some packages needed)
 - Arduino IDE or Platformio
+- PiVPN-wireguard (optional)
 
 
 ## Description
@@ -61,9 +62,7 @@ The prototype version i did on breadboards, but they are impractical. So I solde
 
 ## Code
 [code](/code/esp01_DHT11grafanaV1) <br>
-I used Arduino IDE to program the microcontroller. Therefor just copy the folder and open it within the IDE. You have to install the Board manually if you have not already, as the ESP8266 is not contained by default. This is the case for the library of the DHT sensor as well, this time just use the library manager within the IDE.
-
-
+I used Arduino IDE to program the microcontroller. Therefor just copy the folder and open it within the IDE. You have to install the Board manually if you have not already, as the ESP8266 is not contained by default. This is the case for the library of the DHT sensor as well, this time just use the library manager within the IDE. <br>
 
 ## Grafana and Raspberrypi
 ### General
