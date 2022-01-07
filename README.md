@@ -51,14 +51,14 @@ I wanted to keep the effort manageable and beginner friendly therefore the circu
 Fritzing is pretty useful for smaller projects. You can draw nice sketches of your circuits and export gerber files to print pcb somewhere. <br>
 The Buck-converter needs to bee adjusted with a Multimeter to *3.3V* depending on your input Voltage. To supply the circuit an old *5V* micro-USB phone charger is fine, i use an old 5V adapter with a coaxial power connector so i simply switched the micro-USB connector to a fitting coaxial. <br>
 
-![circuit](/docs/circuit.png "circuit")
+![circuit](/docs/circuit_board.png "circuit breadboard")
 
-![circuitraw](/docs/circuitraw.png "circuit")
+![circuitraw](/docs/circuit_raw.png "circuit")
 
 <br>
 The prototype version i did on breadboards, but they are impractical. So I soldered the PCB layout on simple hole grid plates (*3x7cm*) and inserted a fuse on the positive incoming wire because of security reasons. <br>
 
-![circuitpcb](/docs/circuitpcb.png "circuit")
+![circuitpcb](/docs/circuit_pcb.png "circuit pcb layout")
 
 ## Code
 [code](/code/esp01_DHT11grafanaV1) <br>
@@ -133,7 +133,6 @@ This file will then be executed at every reboot. It is possible to execute files
 <br>
 
 ### Grafana
-![grafana dashboard example](/docs/pictures/placeholder.png "placeholder") <br>
 
 Again, there are very good [tutorials](https://grafana.com/tutorials/install-grafana-on-raspberry-pi/) that you can fall back on, so I won't go into more detail about the installation process. Grafana can be used to display the collected data in nice plots. <br>
 
