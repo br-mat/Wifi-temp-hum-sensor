@@ -56,7 +56,7 @@ The Buck-converter needs to bee adjusted with a Multimeter to *3.3V* depending o
 ![circuitraw](/docs/circuit_raw.png "circuit")
 
 <br>
-The prototype version i did on breadboards, but they are impractical. So I soldered the PCB layout on simple hole grid plates (*3x7cm*) and inserted a fuse on the positive incoming wire because of security reasons. <br>
+The prototype version i did on breadboards, but they are impractical. So I soldered the PCB layout on simple hole grid plates ( *3x7cm* ) and inserted a fuse on the positive incoming wire because of security reasons. If you are using a module for the *DHT-11* simply remove *R1* and connect the module directly to *VOUT* of the Buck-converter. <br>
 
 ![circuitpcb](/docs/circuit_pcb.png "circuit pcb layout")
 
