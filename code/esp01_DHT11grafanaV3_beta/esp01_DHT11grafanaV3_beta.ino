@@ -2,6 +2,11 @@
 #include <PubSubClient.h> // Include the MQTT library
 #include "DHT.h" // Include the DHT library
 #include <Wire.h>
+#include <Arduino.h>
+
+
+// ...
+
 
 /*
 Copyright (C) <2021>  <br-mat>
@@ -206,12 +211,16 @@ void loop() {
     Serial.println(F("Error: No connection could've been established!"));
   }
 
+  // Or just put it to sleep?
+  //WiFi.forceSleepBegin();
+
   // Shut down WiFi
   WiFi.disconnect();
   WiFi.mode(WIFI_OFF);
-  
+
   // Put the ESP8266 into light sleep mode for the specified interval
   // Go to sleep for the specified measure_time interval
-  uint64_t sleep_duration = measure_time * 60 * 1000000;  // Convert minutes to microseconds
-  esp_light_sleep_start(sleep_duration);
+  
+  //uint64_t sleep_duration = measure_time * 60 * 1000000;  // Convert minutes to microseconds
+  //ESP.esp_light_sleep_start(sleep_duration);
 }
