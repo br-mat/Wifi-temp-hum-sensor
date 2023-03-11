@@ -1,7 +1,9 @@
 #include <ESP8266WiFi.h>
 #include <InfluxDbClient.h>
+#include <Arduino.h>
+#include <Wire.h>
 #include "DHT.h"
-#include "config.h"
+#include "userConfig.h"
 
 // Define the pin and type of DHT sensor being used
 #define DHTPIN 2
@@ -12,8 +14,8 @@
 #define MEASUREMENT_DELAY_MINUTES 10
 
 // Create an instance of the InfluxDBClient class with the specified URL, database name and token
-InfluxDBClient client(INFLUXDB_URL, INFLUXDB_DB_NAME);
-client.setToken(INFLUXDB_TOKEN);
+InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_DB_NAME, INFLUXDB_TOKEN);
+//client.setToken(INFLUXDB_TOKEN);
 
 // Create an instance of the DHT class with the specified pin and type
 DHT dht(DHTPIN, DHTTYPE);
