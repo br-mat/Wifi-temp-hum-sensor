@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <InfluxDbClient.h>
 #include "DHT.h"
+#include "config.h"
 
 // Define the pin and type of DHT sensor being used
 #define DHTPIN 2
@@ -10,19 +11,9 @@
 #define MEASUREMENTS 15
 #define MEASUREMENT_DELAY_MINUTES 10
 
-// Define the name of the sensor being used
-#define SENSOR_NAME "sensor-1"
-
-// Define the SSID and password of the WiFi network
-const char* ssid = "your-ssid";
-const char* password = "your-password";
-
-// Define the URL and database name of the InfluxDB server
-#define INFLUXDB_URL "http://your-influxdb-server:8086"
-#define INFLUXDB_DB_NAME "in"
-
-// Create an instance of the InfluxDBClient class with the specified URL and database name
+// Create an instance of the InfluxDBClient class with the specified URL, database name and token
 InfluxDBClient client(INFLUXDB_URL, INFLUXDB_DB_NAME);
+client.setToken(INFLUXDB_TOKEN);
 
 // Create an instance of the DHT class with the specified pin and type
 DHT dht(DHTPIN, DHTTYPE);

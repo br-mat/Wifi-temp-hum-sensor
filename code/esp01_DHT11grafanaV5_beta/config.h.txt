@@ -1,0 +1,11 @@
+// Define the name of the sensor being used
+#define SENSOR_NAME "sensor-1"
+
+// Define the SSID and password of the WiFi network
+const char* ssid = "your-ssid";
+const char* password = "your-password";
+
+// Define the URL and database name of the InfluxDB server
+#define INFLUXDB_URL "http://your-influxdb-server:8086"
+#define INFLUXDB_DB_NAME "in"
+#define INFLUXDB_TOKEN "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
