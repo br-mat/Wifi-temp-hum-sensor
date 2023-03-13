@@ -23,20 +23,25 @@ DHT dht(DHTPIN, DHTTYPE);
 // Function to connect to WiFi network
 bool connectWifi() {
   int tries = 0;
+  WiFi.mode(WIFI_STA); // set WiFi mode to station (client)
   WiFi.begin(ssid, password);
-  
-  // Wait for WiFi connection to be established
-  while (WiFi.status() != WL_CONNECTED) {
+  Serial.println("Connecting to Wifi!");
+  // Wait for WiFi connection to be established or timeout after 10 seconds
+  while (WiFi.status() != WL_CONNECTED && tries < 10) {
     delay(1000);
+    Serial.print(".");
     tries++;
-    if (tries >= 10) {
-      // Return true if failed to connect after 10 tries
-      return true;
-    }
   }
-  
-  // Return false if WiFi connection established
-  return false;
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println();
+    Serial.println("Wifi Connection established!");
+    return false; // Return false if WiFi connection established
+  } else {
+    Serial.println();
+    Serial.println("Wifi Connection failed!");
+    return true; // Return true if failed to connect after 10 tries
+  }
 }
 
 // Function to calculate the median value of an array
@@ -49,7 +54,6 @@ float median(float arr[], int n) {
     }
 }
 
-// Function to read sensor value
 float readSensorValue(DHT& dht, float &temp, float &hum) {
   // Take dummy measurements to stabilize the sensor readings
   for(int i=0; i<5; i++){
@@ -67,7 +71,7 @@ float readSensorValue(DHT& dht, float &temp, float &hum) {
     float temperature = dht.readTemperature();
     if (!isnan(humidity) && !isnan(temperature)) {
       values_t[i] = temperature;
-      values_h[i] = temperature;
+      values_h[i] = humidity;
       i++;
     }
     retries--;
@@ -76,6 +80,7 @@ float readSensorValue(DHT& dht, float &temp, float &hum) {
   
   // Return true if failed to read sensor value
   if (retries == 0){
+    Serial.println("Measuring DHT11 failed");
     return true;
   }
   
@@ -90,6 +95,7 @@ float readSensorValue(DHT& dht, float &temp, float &hum) {
 // Initialize serial communication and check InfluxDB connection
 void setup() {
   Serial.begin(115200);  // Set baud rate for serial communication
+  Serial.println("Hello World!");
   
   // Check if connection to InfluxDB is successful
   if (!client.validateConnection()) {
@@ -98,7 +104,6 @@ void setup() {
   } else {
     Serial.println("Connected to InfluxDB");
   }
-
   dht.begin();  // Initialize DHT sensor
 }
 
@@ -113,6 +118,7 @@ void loop() {
 
   float temperature;
   float humidity;
+
   // Read sensor values from DHT sensor
   if (readSensorValue(dht, temperature, humidity)){
     Serial.println("Failed to read DHT sensor!");  // Print error message if sensor reading is unsuccessful
@@ -127,6 +133,9 @@ void loop() {
     if (!client.writePoint(point)) {
       Serial.print("InfluxDB write failed: ");
       Serial.println(client.getLastErrorMessage());  // Print error message if write operation is unsuccessful
+    }
+    else{
+      Serial.println("InfluxDB points sent");
     }
 
     WiFi.disconnect(true);  // Disconnect from WiFi to conserve power
