@@ -1,4 +1,9 @@
 # Wifi-temp-hum-sensor
+
+## ToDo:
+- rework documentation
+- Update project with InfluxDB 2.X (done)
+
 ## About
 The goal of the project is to connect a DHT-11 Sensor to the local network. Store its data and plot the data in nice graphs. All parts i used for the project itself i had laying round so its quite simple structured. <br>
 <br>
