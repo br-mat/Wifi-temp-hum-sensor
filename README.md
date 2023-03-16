@@ -7,7 +7,7 @@ I use it to monitor indoor and outdoor environmental values like temperature and
 <br>
 
 ## Content
-- [Features & Goals](#features)
+- [Features](#features)
 - [Description](#description)
 - [Circuit](#circuit)
 - [Code](#code)
@@ -16,7 +16,6 @@ I use it to monitor indoor and outdoor environmental values like temperature and
 
 ### Goals
 - Measure Data
-- send with MQTT
 - store in Database (Influxdb)
 - display time series data with grafana
 
