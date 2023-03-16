@@ -1,9 +1,5 @@
 # Wifi-temp-hum-sensor
 
-## ToDo:
-- rework documentation
-- Update project with InfluxDB 2.X (done)
-
 ## About
 The goal of the project is to connect a DHT-11 Sensor to the local network. Store its data and plot the data in nice graphs. All parts i used for the project itself i had laying round so its quite simple structured. <br>
 <br>
@@ -51,10 +47,9 @@ The circuit is supplied by a conventional 12V power supply I had lying around th
 To build this project there is some assumed knowledge necessary, like basic Linux or programming Languages (Python, C++). For beginners i will link some helpful tutorials which illustrate the configuration steps in detail, whenever i found a good one.
 
 ## Circuit
-I wanted to keep the effort manageable and beginner friendly therefore the circuit itself might not be efficient. As possible upgrade a lot energy can be saved when with good solder [skills](https://www.instructables.com/Enable-DeepSleep-on-an-ESP8266-01/) this way the phone charger can probably be dropped and a *9V* Battery is probably sufficient. <br>
-<br>
-Fritzing is pretty useful for smaller projects. You can draw nice sketches of your circuits and export gerber files to print pcb somewhere. <br>
-The Buck-converter needs to bee adjusted with a Multimeter to *3.3V* depending on your input Voltage. To supply the circuit an old *5V* micro-USB phone charger is fine, i use an old 5V adapter with a coaxial power connector so i simply switched the micro-USB connector to a fitting coaxial. <br>
+The circuit design prioritizes manageability and accessibility for beginners. However, it may not be the most efficient. With advanced soldering [skills](https://www.instructables.com/Enable-DeepSleep-on-an-ESP8266-01/), energy consumption could be reduced by using a 9V battery instead of a phone charger. In this case, the buck-converter may need to be changed. The buck-converter must be adjusted to 3.3V with a multimeter based on the input voltage. An old 5V micro-USB phone charger can power the circuit. I use an old 5V adapter with a coaxial power connector and switched the micro-USB connector to a fitting coaxial one.
+
+Fritzing is a useful tool for smaller projects, it allows you to create clear sketches of your circuits and export gerber files for PCB printing.
 
 ![circuit](/docs/circuit_board.png "circuit breadboard")
 
@@ -66,76 +61,31 @@ The prototype version i did on breadboards, but they are impractical. So I solde
 ![circuitpcb](/docs/circuit_pcb.png "circuit pcb layout")
 
 ## Code
-[code](/code/esp01_DHT11grafanaV1) <br>
-I used Arduino IDE to program the microcontroller. Therefor just copy the folder and open it within the IDE. You have to install the Board manually if you have not already, as the ESP8266 is not contained by default. This is the case for the library of the DHT sensor as well, this time just use the library manager within the IDE. <br>
+[code](/code/esp01_DHT11grafanaV5) <br>
+To program the microcontroller using the Arduino IDE, simply copy the project folder and open it within the IDE. If you haven't already done so, you'll need to [manually install the ESP8266 board package](https://randomnerdtutorials.com/how-to-install-esp8266-board-arduino-ide/), as it is not included in the Arduino IDE by default.
+<br>
+In addition to installing the board package, you'll also need to install libraries for any sensors or other components that you're using in your project. For this project, you'll need to install libraries for both the DHT sensor and InfluxDB. You can do this easily using the Library Manager within the Arduino IDE: simply search for each library and click "Install". <br>
 
 ## Grafana and Raspberrypi
 ### General
-Personally, I am currently using a [**RaspberryPi 4B**](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) with *4GB* Ram on which also a [*VPN*](https://www.pivpn.io/) (**wireguard**) and [*Pihole*](https://pi-hole.net/) are installed. Thanks to the [*VPN*](https://www.pivpn.io/), I can also access the data on the go. I won't go into the installation any further, but it is relatively simple and well described in numerous tutorials. <br>Although a VPN is not necessary for basic operation. Some basic things are important to know:
+Personally, I am currently using a [**RaspberryPi 4B**](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) with *4GB* Ram on which also a [*VPN*](https://www.pivpn.io/) and [*Pihole*](https://pi-hole.net/) are installed. Thanks to the [*VPN*](https://www.pivpn.io/), I can also access the data on the go. I won't go into the installation any further, but it is relatively simple and well described in numerous tutorials. <br>Although a VPN is not necessary for basic operation. Some basic things are important to know:
 - SSid (Netzwerkname): EXAMPLE-XYZ
 - Password: passwordXYZ
 - IP or hostname of the RaspberryPi (IP statically assigned)
 For easier configuration either use screen, ssh, teamviewer, vnc viewer ... to work with the Raspberrypi. Personally I use ssh and vnc, these are easy to install and intuitive to use. <br>
 
 ### InfluxDB
-InfluxDB will be our database to store the gathered data in. 
-If influx has not yet been installed, here are useful instructions [(pimylifeup)](https://pimylifeup.com/raspberry-pi-influxdb/).
-<br>
 
-To set up the database, we first start by creating a user. To do this, InfluxDB is started by entering the following line in the terminal.
-```
-influx
-```
-Influx should now have started, now enter further into the interface:
-```
-CREATE USER "username" WITH PASSWORD "password"
-CREATE DATABASE "database"
-GRANT ALL ON "username" TO "database"
-```
-This ***username*** as well as ***password*** and the ***database*** must be filled in in the code of the microcontrollers.
-<br>
-To get out of this "interface" you simply must enter the command **exit** and you are back in the terminal.
-```
-exit
-```
+InfluxDB 2.0 will be our database to store the gathered data in. If you haven't installed InfluxDB 2.0 yet, you can find instructions on how to do so on a Raspberry Pi [here](https://randomnerdtutorials.com/install-influxdb-2-raspberry-pi/).
 
-### MQTT & Python script
-#### Installation
-Again, there is a [link](https://pimylifeup.com/raspberry-pi-mosquitto-mqtt-server/).
-Username and password must be adjusted in all places in the code. <br>
-<br>
-**MQTT** (Message Queuing Telemetry Transport) Is an open network protocol for machine-to-machine communication (M2M) that enables the transmission of telemetry data in the form of messages between devices. How it works [(link)](http://www.steves-internet-guide.com/mqtt-works/). <br>
-The messages sent consist of topic and payload. Topics are used for simple assignment and have a fixed structure in my case:
-```
-#topic:
-exampletopic=home/location/measurement
-```
-In addition to this topic, the data is appended in the payload, the content as a string.
-```
-#example topics to publish data on
+To set up the database, start by creating an initial user through the InfluxDB user interface:
+1. With InfluxDB running, visit `localhost:8086` in your web browser.
+2. Click "Get Started" to set up your initial user.
+3. Enter a username and password for your initial user and confirm the password.
+4. Enter your initial organization name and bucket name.
+5. Click "Continue" to finish setting up your initial user.
 
-  humidity_topic_sens2 = "home/sens2/humidity";
-  #sensor read
-
-  temperature_topic_sens2 = "home/sens2/temperature";
-  #sensor read
-
-```
-
-<br>
-
-#### Python script
-In order to be able to write or read the data sent via [*MQTT*](#mqtt) to the database, the Python script [MQTTInfluxDBBridge3.py](/code/pi_scripts/MQTTInfluxDBBridge3.py) is used. The script itself comes from a [Tutorial](https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/) and has been adapted to adapt it to the requirements in my projects. The Python code can be started with the shell script [launcher1.sh](/code/pi_scripts/launcher1.sh) automatically with crontab at each boot process. Since the Pi needs a certain amount of time to start everything without errors, I delay the start of the script by *20* seconds. <br>
-To avoid errors, only **int** values should be sent via [*MQTT*](#mqtt) (*2* **byte**), the data type **int** is large on [*Arduino Nano*](https://store.arduino.cc/products/arduino-nano) *2* **byte**. <br>
-```
-sudo crontab -e
-```
-Open cron with any editor to enter the desired programs. As an example:
-```
-@reboot /path/file.sh
-```
-This file will then be executed at every reboot. It is possible to execute files in specific intervals, look up additional [information](https://pimylifeup.com/cron-jobs-and-crontab/) to cron.
-<br>
+After setting up your initial user in InfluxDB 2.0, make sure to update your microcontroller code with the new username, password, organization name, and bucket name. You can do this by editing the [userConfig.h](/code/userConfig.h) file and entering the relevant information.
 
 ### Grafana
 
