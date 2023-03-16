@@ -20,6 +20,13 @@ I use it to monitor indoor and outdoor environmental values like temperature and
 - store in Database (Influxdb)
 - display time series data with grafana
 
+## Description
+This is just a simple Project to connect a DHT-11 Sensor to your local network, sends its data and plot these values with Grafana. The concept should work with almost any sensor, as sending data with MQTT is quite simple. In my case I’m using a ESP-8266-01 because it’s a pretty small package. <br>
+In the current setup it measures temperature and humidity, optionally other sensors could be connected too. Connecting a BMx-280 sensor for example should be possible too to measure pressure as well. In this case the code must be adjusted of course, this will probably be added later. <br>
+The circuit is supplied by a conventional 12V power supply I had lying around this would be a too high Voltage source for our 3.3V Microcontroller. I use a buck-converter to bring it down to the save 3.3V. <br>
+<br>
+To build this project there is some assumed knowledge necessary, like basic Linux or programming Languages (Python, C++). For beginners i will link some helpful tutorials which illustrate the configuration steps in detail, whenever i found a good one.
+
 ### Parts & Features
 Hardware:
 - RaspberryPi 4
@@ -32,19 +39,10 @@ Hardware:
 
 Software:
 - Raspian (etc.)
-- InfluxDB
+- InfluxDB2
 - Grafana
-- Python (should be installed by default, probably some packages needed)
 - Arduino IDE or Platformio
 - PiVPN-wireguard (optional)
-
-
-## Description
-This is just a simple Project to connect a DHT-11 Sensor to your local network, sends its data and plot these values with Grafana. The concept should work with almost any sensor, as sending data with MQTT is quite simple. In my case I’m using a ESP-8266-01 because it’s a pretty small package. <br>
-In the current setup it measures temperature and humidity, optionally other sensors could be connected too. Connecting a BMx-280 sensor for example should be possible too to measure pressure as well. In this case the code must be adjusted of course, this will probably be added later. <br>
-The circuit is supplied by a conventional 12V power supply I had lying around this would be a too high Voltage source for our 3.3V Microcontroller. I use a buck-converter to bring it down to the save 3.3V. <br>
-<br>
-To build this project there is some assumed knowledge necessary, like basic Linux or programming Languages (Python, C++). For beginners i will link some helpful tutorials which illustrate the configuration steps in detail, whenever i found a good one.
 
 ## Circuit
 The circuit design prioritizes manageability and accessibility for beginners. However, it may not be the most efficient. With advanced soldering [skills](https://www.instructables.com/Enable-DeepSleep-on-an-ESP8266-01/), energy consumption could be reduced by using a 9V battery instead of a phone charger. In this case, the buck-converter may need to be changed. The buck-converter must be adjusted to 3.3V with a multimeter based on the input voltage. An old 5V micro-USB phone charger can power the circuit. I use an old 5V adapter with a coaxial power connector and switched the micro-USB connector to a fitting coaxial one.
