@@ -43,15 +43,19 @@ bool connectWifi() {
   if (WiFi.status() == WL_CONNECTED) {
     #ifdef DEBUG
     Serial.println();
-    Serial.println("Wifi Connection established!");
+    Serial.print("Wifi Connection established! Signal strength: ");
+    Serial.print(WiFi.RSSI());
+    Serial.println(" dBm");
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
     #endif
-    return false; // Return false if WiFi connection established
+    return true; // Return true if WiFi connection established
   } else {
     #ifdef DEBUG
     Serial.println();
-    Serial.println("Wifi Connection failed!");
+    Serial.println("Wifi Connection failed! Check SSID, password, and signal strength.");
     #endif
-    return true; // Return true if failed to connect after 10 tries
+    return false; // Return false if failed to connect after 10 tries
   }
 }
 
@@ -65,14 +69,17 @@ float median(float arr[], int n) {
     }
 }
 
-float readSensorValue(DHT& dht, float &temp, float &hum) {
+bool readSensorValue(DHT& dht, float &temp, float &hum) {
+  #ifdef DEBUG
   Serial.println("Start measuring:");
+  #endif
   float humidity;
   float temperature;
   // Take dummy measurements to stabilize the sensor readings
   for(int i=0; i<5; i++){
     humidity = dht.readHumidity();
     temperature = dht.readTemperature();
+    delay(1000);
   }
   
   // Take actual measurements
@@ -100,22 +107,24 @@ float readSensorValue(DHT& dht, float &temp, float &hum) {
     delay(5);
   }
   
-  // Return true if failed to read sensor value
+  // Return false if failed to read sensor value
   if (retries == 0){
     #ifdef DEBUG
-    Serial.println("Measuring DHT11 failed");
+    Serial.println("ERROR: DHT11 sensor failed to provide valid readings!");
+    Serial.println("Possible causes: sensor disconnected, damaged, or requiring reset.");
     #endif
-    return true;
+    return false;
   }
-  
+
   // Calculate median temperature and humidity values and store in temp and hum variables
-  temp = median(values_t, MEASUREMENTS - (5 - retries));
-  hum = median(values_h, MEASUREMENTS - (5 - retries));
+  temp = median(values_t, i);
+  hum = median(values_h, i);
   #ifdef DEBUG
-  Serial.print("Median: "); Serial.print(temp); Serial.print(" - "); Serial.println(hum);
+  Serial.print("Sensor readings collected: "); Serial.print(i); Serial.print("/"); Serial.println(MEASUREMENTS);
+  Serial.print("Median values - Temp: "); Serial.print(temp); Serial.print("°C, Humidity: "); Serial.print(hum); Serial.println("%");
   #endif
-  // Return false if sensor value read successfully
-  return false;
+  // Return true if sensor value read successfully
+  return true;
 }
 
 // Initialize serial communication and check InfluxDB connection
@@ -127,12 +136,15 @@ void setup() {
   // Check if connection to InfluxDB is successful
   if (!client.validateConnection()) {
     #ifdef DEBUG
-    Serial.print("InfluxDB connection failed: ");
+    Serial.println("WARNING: InfluxDB connection test failed at startup!");
+    Serial.print("  Error: ");
     Serial.println(client.getLastErrorMessage());
+    Serial.println("  The device will continue, but data may not be stored.");
+    Serial.println("  Check: INFLUXDB_URL, token, organization, and network connectivity.");
     #endif
   } else {
     #ifdef DEBUG
-    Serial.println("Connected to InfluxDB");
+    Serial.println("✓ Connected to InfluxDB successfully");
     #endif
   }
   dht.begin();  // Initialize DHT sensor
@@ -142,7 +154,7 @@ void setup() {
 void loop() {
   
   // Check if WiFi connection is established or not
-  if (connectWifi()) {
+  if (!connectWifi()) {
     #ifdef DEBUG
     Serial.println("Failed to connect to WiFi");  // Print error message if connection is unsuccessful
     #endif
@@ -153,7 +165,7 @@ void loop() {
   float humidity;
 
   // Read sensor values from DHT sensor
-  if (readSensorValue(dht, temperature, humidity)){
+  if (!readSensorValue(dht, temperature, humidity)){
     #ifdef DEBUG
     Serial.println("Failed to read DHT sensor!");  // Print error message if sensor reading is unsuccessful
     #endif
@@ -167,20 +179,26 @@ void loop() {
     // Write the Point object to InfluxDB
     if (!client.writePoint(point)) {
       #ifdef DEBUG
-      Serial.print("InfluxDB write failed: ");
-      Serial.println(client.getLastErrorMessage());  // Print error message if write operation is unsuccessful
+      Serial.println("ERROR: Failed to write data to InfluxDB!");
+      Serial.print("  Reason: ");
+      Serial.println(client.getLastErrorMessage());
+      Serial.println("  Check: URL, credentials, network connectivity, and InfluxDB service status.");
       #endif
     }
     else{
       #ifdef DEBUG
-      Serial.println("InfluxDB points sent");
+      Serial.print("SUCCESS: Data sent to InfluxDB (");
+      Serial.print(temperature, 1);
+      Serial.print("°C, ");
+      Serial.print(humidity, 1);
+      Serial.println("%)");
       #endif
     }
-
-    WiFi.disconnect(true);  // Disconnect from WiFi to conserve power
-    WiFi.mode(WIFI_OFF);
-    delay(10 * 60 * 1000);  // Wait for 10 minutes before repeating the loop
-    // ESP 8266 01 cannot wake up using sleep (at least without hardware changes)
-    // ESP.deepSleep(10 * 60 * 1000000);  // Put the ESP8266 into deep sleep mode to conserve power
   }
+
+  WiFi.disconnect(true);  // Disconnect from WiFi to conserve power
+  WiFi.mode(WIFI_OFF);
+  delay(MEASUREMENT_DELAY_MINUTES * 60UL * 1000UL);  // Wait before repeating the loop
+  // ESP 8266 01 cannot wake up using sleep (at least without hardware changes)
+  // ESP.deepSleep(MEASUREMENT_DELAY_MINUTES * 60UL * 1000000UL);
 }
