@@ -22,7 +22,7 @@ I use it to monitor indoor and outdoor environmental values like temperature and
 ## Description
 This is just a simple Project to connect a DHT-11 Sensor to your local network, sends its data and plot these values with Grafana. The concept should work with almost any sensor, as sending data with MQTT is quite simple. In my case I’m using a ESP-8266-01 because it’s a pretty small package. <br>
 In the current setup it measures temperature and humidity, optionally other sensors could be connected too. Connecting a BMx-280 sensor for example should be possible too to measure pressure as well. In this case the code must be adjusted of course, this will probably be added later. <br>
-The circuit is supplied by a conventional 12V power supply I had lying around this would be a too high Voltage source for our 3.3V Microcontroller. I use a buck-converter to bring it down to the save 3.3V. <br>
+The circuit is supplied by a conventional 12V power supply I had lying around this would be a too high Voltage source for our 3.3V Microcontroller. I use a buck-converter to bring it down to the safe 3.3V. <br>
 <br>
 To build this project there is some assumed knowledge necessary, like basic Linux or programming Languages (Python, C++). For beginners i will link some helpful tutorials which illustrate the configuration steps in detail, whenever i found a good one.
 
@@ -66,9 +66,11 @@ In addition to installing the board package, you'll also need to install librari
 ## Grafana and Raspberrypi
 ### General
 Personally, I am currently using a [**RaspberryPi 4B**](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) with *4GB* Ram on which also a [*VPN*](https://www.pivpn.io/) and [*Pihole*](https://pi-hole.net/) are installed. Thanks to the [*VPN*](https://www.pivpn.io/), I can also access the data on the go. I won't go into the installation any further, but it is relatively simple and well described in numerous tutorials. <br>Although a VPN is not necessary for basic operation. Some basic things are important to know:
-- SSid (Netzwerkname): EXAMPLE-XYZ
+
+- SSID (WiFi network name): EXAMPLE-XYZ
 - Password: passwordXYZ
 - IP or hostname of the RaspberryPi (IP statically assigned)
+
 For easier configuration either use screen, ssh, teamviewer, vnc viewer ... to work with the Raspberrypi. Personally I use ssh and vnc, these are easy to install and intuitive to use. <br>
 
 ### InfluxDB
@@ -82,18 +84,19 @@ To set up the database, start by creating an initial user through the InfluxDB u
 4. Enter your initial organization name and bucket name.
 5. Click "Continue" to finish setting up your initial user.
 
-After setting up your initial user in InfluxDB 2.0, make sure to update your microcontroller code with the new username, password, organization name, and bucket name. You can do this by editing the [userConfig.h](/code/userConfig.h) file and entering the relevant information.
+After setting up your initial user in InfluxDB 2.0, make sure to update your microcontroller code with the new username, password, organization name, and bucket name. You can do this by editing the [userConfig.h](/code/esp01_DHT11grafanaV5/userConfig.h) file and entering the relevant information.
 
 ### Grafana
 
 Again, there are very good [tutorials](https://grafana.com/tutorials/install-grafana-on-raspberry-pi/) that you can fall back on, so I won't go into more detail about the installation process. Grafana can be used to display the collected data in nice plots. <br>
 
-In order to use Grafana we need to configure our datasource and the dashboard. Starting with the datasource, first of all open a browser and enter (or whatever the IP of your pi's adress is): <br>
+In order to use Grafana we need to configure our datasource and the dashboard. Starting with the datasource, first of all open a browser and enter (or whatever the IP of your pi's address is): <br>
 ```
 http://raspberrypi:3000/
 ```
-- click *'Configuration'* on the left side
-- Simply hit *'Add Datasoruce'*
+
+- Click *'Configuration'* on the left side
+- Simply hit *'Add Datasource'*
 - Now select *InfluxDB* as our Database
 
 <br>
